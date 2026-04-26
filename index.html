@@ -1051,20 +1051,6 @@
             });
         }
 
-        // ========== Неоновое свечение имён ==========
-        function checkNamesGlow() {
-            const namesBlock = document.getElementById('namesBlock');
-            const rect = namesBlock.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            
-            // Свечение когда имена в центре экрана
-            const centerDistance = Math.abs(rect.top + rect.height/2 - windowHeight/2);
-            if (centerDistance < 150) {
-                namesBlock.classList.add('glow');
-            } else {
-                namesBlock.classList.remove('glow');
-            }
-        }
 
         // ========== Поляроид проявляется ==========
         let polaroidRevealed = false;
@@ -1085,7 +1071,6 @@
         window.addEventListener('scroll', () => {
             updateTimelineProgress();
             checkAnimateSections();
-            checkNamesGlow();
             checkPolaroidReveal();
         });
 
@@ -1107,7 +1092,6 @@
         window.addEventListener('load', () => {
             updateTimelineProgress();
             checkAnimateSections();
-            checkNamesGlow();
             checkPolaroidReveal();
         });
 
