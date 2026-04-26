@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Приглашение на свадьбу</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500&family=Cormorant+Garamond:wght@400;600;700&family=Dancing+Script:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+            transition: background-position 0.1s ease-out;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+            transition: transform 0.1s ease-out;
+        }
+
+        .hearts-burst {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .burst-heart {
+            position: absolute;
+            animation: burstFly 1.5s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes burstFly {
+            0% {
+                transform: translate(0, 0) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1) rotate(var(--rot));
+                opacity: 0;
+            }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            font-size: 20px;
+            animation: floatUp 8s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .parallax-bg-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .parallax-heart {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0.15;
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Приветственный экран */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(252, 228, 236, 0.98), rgba(248, 187, 208, 0.98), rgba(244, 143, 177, 0.98));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            cursor: pointer;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .welcome-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .welcome-content {
+            text-align: center;
+            animation: welcomeBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes welcomeBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .welcome-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: welcomePulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes welcomePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .welcome-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 52px;
+            color: #c0392b;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(192, 57, 43, 0.2);
+        }
+
+        .welcome-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            color: #e74c3c;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .welcome-hint {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            color: #999;
+            letter-spacing: 1px;
+            animation: hintPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes hintPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Узорная окантовка */
+        .invitation-wrapper {
+            position: relative;
+            max-width: 620px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 36px;
+            background: 
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(192, 57, 43, 0.08) 8px,
+                    rgba(192, 57, 43, 0.08) 10px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(231, 76, 60, 0.06) 8px,
+                    rgba(231, 76, 60, 0.06) 10px
+                ),
+                linear-gradient(135deg, #fce4ec, #f8bbd0, #f48fb1, #e91e63);
+            background-size: 100% 100%;
+            box-shadow: 
+                0 0 15px rgba(192, 57, 43, 0.15),
+                0 0 30px rgba(192, 57, 43, 0.08),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .invitation-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border-radius: 32px;
+            border: 2px dashed rgba(192, 57, 43, 0.2);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .invitation {
+            background: rgba(255, 252, 245, 0.97);
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(139, 119, 90, 0.03) 2px,
+                    rgba(139, 119, 90, 0.03) 4px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(139, 119, 90, 0.02) 2px,
+                    rgba(139, 119, 90, 0.02) 4px
+                ),
+                radial-gradient(
+                    ellipse at 30% 20%,
+                    rgba(210, 180, 140, 0.08) 0%,
+                    transparent 50%
+                ),
+                radial-gradient(
+                    ellipse at 70% 80%,
+                    rgba(210, 180, 140, 0.06) 0%,
+                    transparent 50%
+                );
+            border-radius: 24px;
+            box-shadow: 
+                inset 0 0 30px rgba(139, 119, 90, 0.03),
+                inset 0 0 0 2px rgba(255, 255, 255, 0.6);
+            max-width: 100%;
+            width: 100%;
+            padding: 55px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            z-index: 1;
+        }
+
+        .invitation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,182,193,0.08) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .invitation > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 20px;
+            animation: floatHeart 6s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        .floating-heart:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .floating-heart:nth-child(2) { top: 20%; right: 15%; animation-delay: 1s; }
+        .floating-heart:nth-child(3) { bottom: 30%; left: 15%; animation-delay: 2s; }
+        .floating-heart:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 3s; }
+        .floating-heart:nth-child(5) { top: 50%; left: 5%; animation-delay: 4s; }
+        .floating-heart:nth-child(6) { top: 40%; right: 5%; animation-delay: 5s; }
+        .floating-heart:nth-child(7) { top: 70%; left: 50%; animation-delay: 1.5s; }
+        .floating-heart:nth-child(8) { top: 30%; right: 50%; animation-delay: 3.5s; }
+
+        @keyframes floatHeart {
+            0%, 100% { transform: translateY(0) scale(1); }
+            25% { transform: translateY(-20px) scale(1.1); }
+            50% { transform: translateY(-10px) scale(1); }
+            75% { transform: translateY(-25px) scale(1.05); }
+        }
+
+        .hearts {
+            font-size: 50px;
+            margin-bottom: 30px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            color: #c0392b;
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .names {
+            font-family: 'Great Vibes', cursive;
+            font-size: 56px;
+            color: #c0392b;
+            margin: 25px 0;
+            font-weight: 400;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(192, 57, 43, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .names .and {
+            font-family: 'Dancing Script', cursive;
+            font-size: 32px;
+            color: #e74c3c;
+            display: block;
+            margin: 5px 0;
+            font-weight: 400;
+        }
+
+        .ribbon-divider {
+            width: 200px;
+            height: 30px;
+            margin: 20px auto;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ribbon-left, .ribbon-right {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+            position: relative;
+        }
+
+        .ribbon-left {
+            border-radius: 1px 0 0 1px;
+        }
+
+        .ribbon-right {
+            border-radius: 0 1px 1px 0;
+        }
+
+        .ribbon-knot {
+            font-size: 24px;
+            margin: 0 8px;
+            animation: knotPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes knotPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .invitation-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            color: #777;
+            margin: 20px 0;
+            line-height: 1.8;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .rings-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            margin: 20px 0;
+            height: 60px;
+            position: relative;
+        }
+
+        .ring {
+            font-size: 40px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .ring.left {
+            animation: ringLeftGentle 4s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        .ring.right {
+            animation: ringRightGentle 4s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes ringLeftGentle {
+            0%, 100% { 
+                transform: translateX(0) translateY(0); 
+            }
+            50% { 
+                transform: translateX(6px) translateY(-4px); 
+            }
+        }
+
+        @keyframes ringRightGentle {
+            0%, 100% { 
+                transform: translateX(0) translateY(0); 
+            }
+            50% { 
+                transform: translateX(-6px) translateY(4px); 
+            }
+        }
+
+        .animate-section {
+            opacity: 0;
+            transition: all 0.8s ease-out;
+        }
+
+        .animate-section.visible {
+            opacity: 1;
+        }
+
+        .animate-from-left {
+            transform: translateX(-50px);
+        }
+        .animate-from-left.visible {
+            transform: translateX(0);
+        }
+
+        .animate-from-right {
+            transform: translateX(50px);
+        }
+        .animate-from-right.visible {
+            transform: translateX(0);
+        }
+
+        .animate-from-bottom {
+            transform: translateY(50px);
+        }
+        .animate-from-bottom.visible {
+            transform: translateY(0);
+        }
+
+        .animate-scale {
+            transform: scale(0.8);
+        }
+        .animate-scale.visible {
+            transform: scale(1);
+        }
+
+        .when-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            color: #c0392b;
+            margin: 40px 0 20px;
+            font-weight: 400;
+        }
+
+        .calendar {
+            background: linear-gradient(135deg, #fff5f5, #fff0f3);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 20px 0 35px;
+            max-width: 380px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 10px 30px rgba(192, 57, 43, 0.1);
+            border: 1px solid rgba(192, 57, 43, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .calendar:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(192, 57, 43, 0.15);
+        }
+
+        .month-year {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: #c0392b;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .weekday {
+            font-size: 11px;
+            color: #999;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            border-radius: 50%;
+            color: #555;
+            transition: all 0.3s ease;
+            font-weight: 400;
+        }
+
+        .day:hover {
+            background: rgba(192, 57, 43, 0.1);
+        }
+
+        .day.wedding {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(192, 57, 43, 0.4);
+        }
+
+        .day.wedding.strong-pulse {
+            animation: weddingStrongPulse 0.8s ease-in-out 3;
+        }
+
+        @keyframes weddingStrongPulse {
+            0%, 100% { box-shadow: 0 5px 15px rgba(192, 57, 43, 0.4); transform: scale(1); }
+            50% { box-shadow: 0 5px 35px rgba(231, 76, 60, 1); transform: scale(1.3); }
+        }
+
+        .day.wedding:hover {
+            transform: scale(1.2);
+        }
+
+        .day.counting {
+            animation: dayHighlight 0.5s ease-out;
+        }
+
+        @keyframes dayHighlight {
+            0% { background: rgba(231, 76, 60, 0.3); transform: scale(1.2); }
+            100% { background: transparent; transform: scale(1); }
+        }
+
+        .location-block {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white;
+            border-radius: 20px;
+            padding: 35px 30px;
+            margin: 0 0 40px;
+            text-align: left;
+            box-shadow: 0 15px 35px rgba(192, 57, 43, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .location-block:hover {
+            transform: translateY(-3px);
+        }
+
+        .location-block h3 {
+            text-align: center;
+            font-family: 'Great Vibes', cursive;
+            font-size: 36px;
+            margin-bottom: 30px;
+            color: white;
+            font-weight: 400;
+        }
+
+        .timeline-wrapper {
+            position: relative;
+        }
+
+        .timeline-progress {
+            position: absolute;
+            left: 15px;
+            top: 0;
+            width: 2px;
+            height: 0%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1;
+            transition: height 0.3s ease-out;
+            border-radius: 1px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 5px;
+            width: 2px;
+            height: calc(100% + 10px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .timeline-item:last-child::before {
+            display: none;
+        }
+
+        .time-badge {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            padding: 8px 12px;
+            font-weight: 500;
+            font-size: 14px;
+            white-space: nowrap;
+            margin-right: 20px;
+            min-width: 90px;
+            text-align: center;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .timeline-item:hover .time-badge {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-top: 3px;
+            position: relative;
+            z-index: 2;
+            min-width: 0;
+        }
+
+        .timeline-content strong {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 3px;
+            font-weight: 500;
+        }
+
+        .timeline-content span {
+            font-size: 14px;
+            opacity: 0.85;
+            font-weight: 300;
+            line-height: 1.4;
+        }
+
+        .where-section {
+            margin: 0 0 40px;
+            background: linear-gradient(135deg, #fff5f5, #fff0f3);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .where-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            color: #c0392b;
+            margin-bottom: 25px;
+            font-weight: 400;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 15px 15px 45px 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            display: inline-block;
+            max-width: 100%;
+            transform: rotate(-2deg);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .polaroid.reveal .polaroid-image {
+            animation: photoReveal 1.5s ease-out forwards;
+        }
+
+        @keyframes photoReveal {
+            0% {
+                filter: brightness(3) blur(10px);
+                transform: scale(1.1);
+            }
+            60% {
+                filter: brightness(1.2) blur(0px);
+                transform: scale(1.02);
+            }
+            100% {
+                filter: brightness(1) blur(0px);
+                transform: scale(1);
+            }
+        }
+
+        .polaroid:hover {
+            transform: rotate(0deg) scale(1.03);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .polaroid-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 2px;
+            display: block;
+        }
+
+        .polaroid-caption {
+            margin-top: 18px;
+            text-align: center;
+        }
+
+        .polaroid-name {
+            font-family: 'Dancing Script', cursive;
+            font-size: 28px;
+            color: #c0392b;
+            margin-bottom: 8px;
+        }
+
+        .polaroid-address {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            color: #666;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .countdown {
+            background: linear-gradient(135deg, #f8f8f8, #fff0f3);
+            border-radius: 20px;
+            padding: 30px 25px;
+            margin: 0 0 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .countdown-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            color: #c0392b;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        .countdown-numbers {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .countdown-block {
+            text-align: center;
+            min-width: 65px;
+            animation: countPulse 2s ease-in-out infinite;
+        }
+
+        .countdown-block:nth-child(1) { animation-delay: 0s; }
+        .countdown-block:nth-child(2) { animation-delay: 0.2s; }
+        .countdown-block:nth-child(3) { animation-delay: 0.4s; }
+        .countdown-block:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes countPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .countdown-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: #c0392b;
+            display: block;
+            line-height: 1;
+            margin-bottom: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .countdown-label {
+            font-size: 11px;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        .footer {
+            margin-top: 30px;
+            color: #999;
+            font-size: 18px;
+            font-weight: 300;
+            font-style: italic;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #c0392b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 5px 20px rgba(192, 57, 43, 0.4);
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(192, 57, 43, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .invitation {
+                padding: 40px 25px;
+                border-radius: 20px;
+            }
+            
+            .invitation-wrapper {
+                padding: 8px;
+                border-radius: 28px;
+            }
+            
+            .invitation-wrapper::before {
+                border-radius: 24px;
+            }
+            
+            .names {
+                font-size: 44px;
+            }
+            
+            .names .and {
+                font-size: 26px;
+            }
+            
+            h1 {
+                font-size: 20px;
+                letter-spacing: 3px;
+            }
+            
+            .when-title,
+            .where-title {
+                font-size: 40px;
+            }
+            
+            .invitation-text {
+                font-size: 17px;
+            }
+            
+            .time-badge {
+                min-width: 80px;
+                font-size: 13px;
+                padding: 6px 10px;
+                margin-right: 14px;
+            }
+            
+            .timeline-content strong {
+                font-size: 16px;
+            }
+            
+            .timeline-content span {
+                font-size: 13px;
+            }
+            
+            .countdown-numbers {
+                gap: 15px;
+            }
+            
+            .countdown-number {
+                font-size: 36px;
+            }
+            
+            .countdown-label {
+                font-size: 10px;
+            }
+            
+            .polaroid {
+                padding: 12px 12px 35px 12px;
+            }
+            
+            .polaroid-name {
+                font-size: 24px;
+            }
+            
+            .polaroid-address {
+                font-size: 16px;
+            }
+            
+            .ring {
+                font-size: 34px;
+            }
+
+            .welcome-title {
+                font-size: 42px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .invitation-wrapper {
+                padding: 6px;
+                border-radius: 24px;
+            }
+            
+            .invitation-wrapper::before {
+                border-radius: 20px;
+            }
+            
+            .invitation {
+                padding: 30px 15px;
+                border-radius: 18px;
+            }
+            
+            .hearts {
+                font-size: 36px;
+                margin-bottom: 20px;
+            }
+            
+            h1 {
+                font-size: 18px;
+                letter-spacing: 2px;
+                margin-bottom: 20px;
+            }
+            
+            .names {
+                font-size: 36px;
+                margin: 15px 0;
+            }
+            
+            .names .and {
+                font-size: 22px;
+                margin: 3px 0;
+            }
+            
+            .ribbon-divider {
+                width: 150px;
+                margin: 15px auto;
+            }
+            
+            .invitation-text {
+                font-size: 15px;
+                margin: 15px 0;
+            }
+            
+            .when-title,
+            .where-title {
+                font-size: 34px;
+                margin: 25px 0 15px;
+            }
+            
+            .calendar {
+                padding: 20px 15px;
+                margin: 15px 0 25px;
+            }
+            
+            .month-year {
+                font-size: 20px;
+                margin-bottom: 18px;
+            }
+            
+            .weekdays {
+                gap: 4px;
+                margin-bottom: 8px;
+            }
+            
+            .weekday {
+                font-size: 9px;
+                letter-spacing: 0.5px;
+            }
+            
+            .days {
+                gap: 4px;
+            }
+            
+            .day {
+                font-size: 12px;
+            }
+            
+            .day.wedding {
+                font-size: 13px;
+            }
+            
+            .location-block {
+                padding: 25px 15px;
+                margin: 0 0 30px;
+            }
+            
+            .location-block h3 {
+                font-size: 30px;
+                margin-bottom: 20px;
+            }
+            
+            .timeline-item {
+                margin-bottom: 18px;
+            }
+            
+            .timeline-item::before {
+                left: 12px;
+                top: 3px;
+            }
+            
+            .timeline-progress {
+                left: 12px;
+                top: 0;
+            }
+            
+            .time-badge {
+                min-width: 70px;
+                font-size: 11px;
+                padding: 5px 8px;
+                margin-right: 10px;
+                letter-spacing: 0;
+            }
+            
+            .timeline-content strong {
+                font-size: 14px;
+            }
+            
+            .timeline-content span {
+                font-size: 11px;
+            }
+            
+            .where-section {
+                padding: 20px 15px;
+                margin: 0 0 30px;
+            }
+            
+            .polaroid {
+                padding: 10px 10px 30px 10px;
+            }
+            
+            .polaroid-image {
+                height: 180px;
+            }
+            
+            .polaroid-name {
+                font-size: 22px;
+            }
+            
+            .polaroid-address {
+                font-size: 15px;
+            }
+            
+            .countdown {
+                padding: 20px 15px;
+            }
+            
+            .countdown-title {
+                font-size: 20px;
+            }
+            
+            .countdown-numbers {
+                gap: 10px;
+            }
+            
+            .countdown-number {
+                font-size: 28px;
+            }
+            
+            .countdown-label {
+                font-size: 9px;
+                letter-spacing: 1px;
+            }
+            
+            .footer {
+                font-size: 16px;
+            }
+            
+            .scroll-top {
+                width: 40px;
+                height: 40px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 16px;
+            }
+            
+            .ring {
+                font-size: 30px;
+            }
+            
+            .rings-container {
+                height: 50px;
+            }
+
+            .welcome-icon {
+                font-size: 60px;
+            }
+
+            .welcome-title {
+                font-size: 36px;
+            }
+
+            .welcome-subtitle {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Приветственный экран -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-content">
+            <div class="welcome-icon">💕</div>
+            <div class="welcome-title">Дорогие гости!</div>
+            <div class="welcome-subtitle">Добро пожаловать на приглашение<br>нашей свадьбы</div>
+            <div class="welcome-hint">Нажмите в любом месте чтобы продолжить ✨</div>
+        </div>
+    </div>
+
+    <div class="hearts-burst" id="heartsBurst"></div>
+    <div class="parallax-bg-hearts" id="parallaxHearts"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="invitation-wrapper">
+        <div class="invitation" id="invitation">
+            <div class="floating-hearts">
+                <div class="floating-heart">💕</div>
+                <div class="floating-heart">💗</div>
+                <div class="floating-heart">💝</div>
+                <div class="floating-heart">💕</div>
+                <div class="floating-heart">💗</div>
+                <div class="floating-heart">💝</div>
+                <div class="floating-heart">✨</div>
+                <div class="floating-heart">💖</div>
+            </div>
+            
+            <div class="rings-container">
+                <div class="ring left">💍</div>
+                <div class="ring right">💍</div>
+            </div>
+            
+            <h1>Приглашение на свадьбу</h1>
+            
+            <div class="names" id="namesBlock">
+                Марк <span class="and">&</span> Диана
+            </div>
+            
+            <div class="ribbon-divider">
+                <div class="ribbon-left"></div>
+                <div class="ribbon-knot">🎀</div>
+                <div class="ribbon-right"></div>
+            </div>
+            
+            <p class="invitation-text">
+                С радостью приглашаем вас разделить с нами<br>
+                самый важный день в нашей жизни!
+            </p>
+            
+            <div class="animate-section animate-from-left" data-animate>
+                <div class="when-title">Когда?</div>
+                
+                <div class="calendar" id="calendarBlock">
+                    <div class="month-year">Июнь 2026</div>
+                    <div class="weekdays">
+                        <div class="weekday">Пн</div>
+                        <div class="weekday">Вт</div>
+                        <div class="weekday">Ср</div>
+                        <div class="weekday">Чт</div>
+                        <div class="weekday">Пт</div>
+                        <div class="weekday">Сб</div>
+                        <div class="weekday">Вс</div>
+                    </div>
+                    <div class="days" id="calendarDays"></div>
+                </div>
+            </div>
+            
+            <div class="animate-section animate-from-right" data-animate>
+                <div class="location-block" id="timelineBlock">
+                    <h3>Во сколько?</h3>
+                    <div class="timeline-wrapper">
+                        <div class="timeline-progress" id="timelineProgress"></div>
+                        
+                        <div class="timeline-item">
+                            <div class="time-badge">12:20</div>
+                            <div class="timeline-content">
+                                <strong>Сбор гостей</strong>
+                                <span>Встречаемся в ЗАГСе</span>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="time-badge">12:40</div>
+                            <div class="timeline-content">
+                                <strong>Роспись</strong>
+                                <span>Торжественная церемония</span>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="time-badge">13:00–13:30</div>
+                            <div class="timeline-content">
+                                <strong>Фотосессия</strong>
+                                <span>Фотографируемся около ЗАГСа</span>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="time-badge">13:30</div>
+                            <div class="timeline-content">
+                                <strong>Фуршет</strong>
+                                <span>Отмечаем в "Торро Грилль"</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="animate-section animate-from-bottom" data-animate>
+                <div class="where-section">
+                    <div class="where-title">Где?</div>
+                    <div class="polaroid" id="polaroidBlock">
+                        <img src="photo_torro.jpg" alt="Торро Грилль" class="polaroid-image" onerror="this.style.display='none';">
+                        <div class="polaroid-caption">
+                            <div class="polaroid-name">Торро Грилль</div>
+                            <div class="polaroid-address">ул. Пушкина, 10</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="animate-section animate-scale" data-animate>
+                <div class="countdown">
+                    <div class="countdown-title">До свадьбы осталось</div>
+                    <div class="countdown-numbers">
+                        <div class="countdown-block">
+                            <span class="countdown-number" id="days">0</span>
+                            <span class="countdown-label">дней</span>
+                        </div>
+                        <div class="countdown-block">
+                            <span class="countdown-number" id="hours">0</span>
+                            <span class="countdown-label">часов</span>
+                        </div>
+                        <div class="countdown-block">
+                            <span class="countdown-number" id="minutes">0</span>
+                            <span class="countdown-label">минут</span>
+                        </div>
+                        <div class="countdown-block">
+                            <span class="countdown-number" id="seconds">0</span>
+                            <span class="countdown-label">секунд</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer">
+                <p>Мы вас очень ждём! 💝</p>
+            </div>
+        </div>
+    </div>
+
+    <button class="scroll-top" id="scrollTop">↑</button>
+
+    <script>
+        // ========== Приветственный экран + Музыка ==========
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const audio = new Audio();
+        audio.loop = true;
+        audio.volume = 0.4;
+        audio.preload = 'auto';
+
+        // Несколько источников музыки
+        const musicSources = [
+            'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+            'https://cdn.pixabay.com/audio/2022/03/10/audio_a2c7c5a0b2.mp3',
+            'https://upload.wikimedia.org/wikipedia/commons/8/8e/Wagner_Bridal_Chorus.ogg'
+        ];
+
+        let currentSource = 0;
+        let musicStarted = false;
+
+        function tryPlayMusic() {
+            if (musicStarted) return;
+            
+            audio.src = musicSources[currentSource];
+            
+            audio.play().then(() => {
+                musicStarted = true;
+                console.log('Музыка играет!');
+            }).catch(() => {
+                currentSource++;
+                if (currentSource < musicSources.length) {
+                    tryPlayMusic();
+                } else {
+                    console.log('Не удалось загрузить музыку');
+                }
+            });
+        }
+
+        welcomeScreen.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            tryPlayMusic();
+            
+            welcomeScreen.classList.add('fade-out');
+            
+            setTimeout(() => {
+                welcomeScreen.remove();
+            }, 800);
+        });
+
+        // ========== Частицы ==========
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            const emojis = ['✨', '💕', '💫', '🌸', '🕊️', '💝', '💗', '🌟'];
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('span');
+                particle.classList.add('particle');
+                particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 6 + 6) + 's';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.fontSize = (Math.random() * 15 + 12) + 'px';
+                particles.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        function createParallaxHearts() {
+            const container = document.getElementById('parallaxHearts');
+            const hearts = ['💕', '💗', '💝', '💖', '💘', '💓', '💞', '🩷'];
+            
+            for (let i = 0; i < 12; i++) {
+                const heart = document.createElement('span');
+                heart.classList.add('parallax-heart');
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 90 + '%';
+                heart.style.top = Math.random() * 90 + '%';
+                heart.style.fontSize = (Math.random() * 25 + 15) + 'px';
+                heart.style.opacity = (Math.random() * 0.15 + 0.05);
+                heart.dataset.speed = (Math.random() * 0.03 + 0.01);
+                container.appendChild(heart);
+            }
+        }
+        createParallaxHearts();
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const parallaxHearts = document.querySelectorAll('.parallax-heart');
+            
+            parallaxHearts.forEach(heart => {
+                const speed = parseFloat(heart.dataset.speed);
+                heart.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+            
+            document.body.style.backgroundPosition = `0 ${scrollY * 0.05}px`;
+        });
+
+        let lastScrollY = 0;
+        let heartBurstCooldown = 0;
+        
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            const scrollDiff = Math.abs(currentScrollY - lastScrollY);
+            
+            if (scrollDiff > 50 && heartBurstCooldown <= 0) {
+                createBurstHearts(5);
+                heartBurstCooldown = 15;
+            }
+            
+            if (heartBurstCooldown > 0) heartBurstCooldown--;
+            lastScrollY = currentScrollY;
+        });
+
+        function createBurstHearts(count) {
+            const container = document.getElementById('heartsBurst');
+            const heartEmojis = ['💕', '💗', '💝', '💖', '💘', '❤️', '💓', '💞'];
+            
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('span');
+                heart.classList.add('burst-heart');
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.setProperty('--tx', (Math.random() * 200 - 100) + 'px');
+                heart.style.setProperty('--ty', (Math.random() * -150 - 50) + 'px');
+                heart.style.setProperty('--rot', (Math.random() * 360) + 'deg');
+                
+                container.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 1500);
+            }
+        }
+
+        function generateCalendar() {
+            const daysContainer = document.getElementById('calendarDays');
+            const weddingDay = 6;
+            
+            for (let day = 1; day <= 30; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+                if (day === weddingDay) {
+                    dayElement.classList.add('wedding');
+                    dayElement.id = 'weddingDay';
+                }
+                dayElement.textContent = day;
+                dayElement.dataset.day = day;
+                daysContainer.appendChild(dayElement);
+            }
+        }
+        generateCalendar();
+
+        function animateCalendarDays() {
+            const days = document.querySelectorAll('.day:not(.wedding)');
+            const weddingDay = document.getElementById('weddingDay');
+            
+            days.forEach((day, index) => {
+                const dayNum = parseInt(day.dataset.day);
+                if (dayNum < 6) {
+                    setTimeout(() => {
+                        day.classList.add('counting');
+                        setTimeout(() => day.classList.remove('counting'), 500);
+                    }, dayNum * 100);
+                }
+            });
+            
+            setTimeout(() => {
+                weddingDay.classList.add('strong-pulse');
+                setTimeout(() => weddingDay.classList.remove('strong-pulse'), 2400);
+            }, 600);
+        }
+
+        function updateTimelineProgress() {
+            const timelineBlock = document.getElementById('timelineBlock');
+            const progress = document.getElementById('timelineProgress');
+            const blockRect = timelineBlock.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            const visibleStart = windowHeight - blockRect.top;
+            const blockHeight = blockRect.height;
+            let percent = (visibleStart / (blockHeight + windowHeight)) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            
+            progress.style.height = percent + '%';
+        }
+
+        function checkAnimateSections() {
+            const sections = document.querySelectorAll('[data-animate]');
+            
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                
+                if (rect.top < windowHeight * 0.85) {
+                    section.classList.add('visible');
+                }
+            });
+        }
+
+        let polaroidRevealed = false;
+        function checkPolaroidReveal() {
+            if (polaroidRevealed) return;
+            
+            const polaroid = document.getElementById('polaroidBlock');
+            const rect = polaroid.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            if (rect.top < windowHeight * 0.8) {
+                polaroid.classList.add('reveal');
+                polaroidRevealed = true;
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            updateTimelineProgress();
+            checkAnimateSections();
+            checkPolaroidReveal();
+        });
+
+        let calendarAnimated = false;
+        const calendarObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !calendarAnimated) {
+                    animateCalendarDays();
+                    calendarAnimated = true;
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        const calendarBlock = document.getElementById('calendarBlock');
+        if (calendarBlock) calendarObserver.observe(calendarBlock);
+
+        window.addEventListener('load', () => {
+            updateTimelineProgress();
+            checkAnimateSections();
+            checkPolaroidReveal();
+        });
+
+        function getMagadanTime() {
+            const now = new Date();
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            return new Date(utc + (11 * 3600000));
+        }
+        
+        const weddingDate = new Date('2026-06-06T12:40:00+11:00').getTime();
+        
+        function updateCountdown() {
+            const now = getMagadanTime().getTime();
+            const distance = weddingDate - now;
+            
+            if (distance < 0) {
+                document.getElementById('days').textContent = '0';
+                document.getElementById('hours').textContent = '0';
+                document.getElementById('minutes').textContent = '0';
+                document.getElementById('seconds').textContent = '0';
+                document.querySelector('.countdown-title').textContent = '🎉 Сегодня наша свадьба!';
+                return;
+            }
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+        
+        const scrollTopBtn = document.getElementById('scrollTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+        
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+</html>
