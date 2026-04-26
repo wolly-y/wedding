@@ -12,9 +12,14 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Montserrat', sans-serif;
             background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%);
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -22,6 +27,7 @@
             padding: 20px;
             position: relative;
             overflow-x: hidden;
+            transition: background-position 0.1s ease-out;
         }
 
         body::before {
@@ -36,6 +42,35 @@
                 radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 50%),
                 radial-gradient(circle at 50% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
             pointer-events: none;
+            transition: transform 0.1s ease-out;
+        }
+
+        /* Контейнер для вылетающих сердечек */
+        .hearts-burst {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .burst-heart {
+            position: absolute;
+            animation: burstFly 1.5s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes burstFly {
+            0% {
+                transform: translate(0, 0) scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1) rotate(var(--rot));
+                opacity: 0;
+            }
         }
 
         /* Летающие частицы */
@@ -71,6 +106,24 @@
                 transform: translateY(-10vh) rotate(360deg) scale(1);
                 opacity: 0;
             }
+        }
+
+        /* Параллакс-сердечки на фоне */
+        .parallax-bg-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .parallax-heart {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0.15;
+            transition: transform 0.1s ease-out;
         }
 
         .invitation {
@@ -194,6 +247,12 @@
             line-height: 1.2;
             animation: fadeInUp 0.8s ease-out 0.4s both;
             text-shadow: 2px 2px 4px rgba(192, 57, 43, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .names.glow {
+            text-shadow: 0 0 20px rgba(231, 76, 60, 0.6), 0 0 40px rgba(231, 76, 60, 0.3), 0 0 60px rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
         }
 
         .names .and {
@@ -226,7 +285,44 @@
             line-height: 1.8;
             font-weight: 400;
             font-style: italic;
-            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        /* Секции с анимациями появления */
+        .animate-section {
+            opacity: 0;
+            transition: all 0.8s ease-out;
+        }
+
+        .animate-section.visible {
+            opacity: 1;
+        }
+
+        .animate-from-left {
+            transform: translateX(-50px);
+        }
+        .animate-from-left.visible {
+            transform: translateX(0);
+        }
+
+        .animate-from-right {
+            transform: translateX(50px);
+        }
+        .animate-from-right.visible {
+            transform: translateX(0);
+        }
+
+        .animate-from-bottom {
+            transform: translateY(50px);
+        }
+        .animate-from-bottom.visible {
+            transform: translateY(0);
+        }
+
+        .animate-scale {
+            transform: scale(0.8);
+        }
+        .animate-scale.visible {
+            transform: scale(1);
         }
 
         .when-title {
@@ -235,7 +331,6 @@
             color: #c0392b;
             margin: 40px 0 20px;
             font-weight: 400;
-            animation: fadeInUp 0.8s ease-out 0.5s both;
         }
 
         .calendar {
@@ -248,7 +343,6 @@
             margin-right: auto;
             box-shadow: 0 10px 30px rgba(192, 57, 43, 0.1);
             border: 1px solid rgba(192, 57, 43, 0.1);
-            animation: fadeInUp 0.8s ease-out 0.7s both;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -309,16 +403,28 @@
             font-weight: 700;
             font-size: 16px;
             box-shadow: 0 5px 15px rgba(192, 57, 43, 0.4);
-            animation: weddingPulse 2s infinite;
+        }
+
+        .day.wedding.strong-pulse {
+            animation: weddingStrongPulse 0.8s ease-in-out 3;
+        }
+
+        @keyframes weddingStrongPulse {
+            0%, 100% { box-shadow: 0 5px 15px rgba(192, 57, 43, 0.4); transform: scale(1); }
+            50% { box-shadow: 0 5px 35px rgba(231, 76, 60, 1); transform: scale(1.3); }
         }
 
         .day.wedding:hover {
             transform: scale(1.2);
         }
 
-        @keyframes weddingPulse {
-            0%, 100% { box-shadow: 0 5px 15px rgba(192, 57, 43, 0.4); }
-            50% { box-shadow: 0 5px 30px rgba(192, 57, 43, 0.8); }
+        .day.counting {
+            animation: dayHighlight 0.5s ease-out;
+        }
+
+        @keyframes dayHighlight {
+            0% { background: rgba(231, 76, 60, 0.3); transform: scale(1.2); }
+            100% { background: transparent; transform: scale(1); }
         }
 
         .location-block {
@@ -329,7 +435,6 @@
             margin: 0 0 40px;
             text-align: left;
             box-shadow: 0 15px 35px rgba(192, 57, 43, 0.3);
-            animation: fadeInUp 0.8s ease-out 0.9s both;
             transition: transform 0.3s ease;
         }
 
@@ -346,29 +451,30 @@
             font-weight: 400;
         }
 
+        /* Таймлайн с прогресс-линией */
+        .timeline-wrapper {
+            position: relative;
+        }
+
+        .timeline-progress {
+            position: absolute;
+            left: 57px;
+            top: 35px;
+            width: 2px;
+            height: 0%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 1;
+            transition: height 0.3s ease-out;
+            border-radius: 1px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
         .timeline-item {
             display: flex;
             align-items: flex-start;
             margin-bottom: 25px;
             position: relative;
             padding-left: 15px;
-            animation: slideRight 0.5s ease-out both;
-        }
-
-        .timeline-item:nth-child(1) { animation-delay: 1.1s; }
-        .timeline-item:nth-child(2) { animation-delay: 1.2s; }
-        .timeline-item:nth-child(3) { animation-delay: 1.3s; }
-        .timeline-item:nth-child(4) { animation-delay: 1.4s; }
-
-        @keyframes slideRight {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
         }
 
         .timeline-item::before {
@@ -399,6 +505,8 @@
             text-align: center;
             letter-spacing: 0.5px;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
         }
 
         .timeline-item:hover .time-badge {
@@ -409,6 +517,8 @@
         .timeline-content {
             flex: 1;
             padding-top: 5px;
+            position: relative;
+            z-index: 2;
         }
 
         .timeline-content strong {
@@ -431,7 +541,6 @@
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            animation: fadeInUp 0.8s ease-out 1.5s both;
         }
 
         .where-title {
@@ -442,6 +551,7 @@
             font-weight: 400;
         }
 
+        /* Поляроид с проявлением */
         .polaroid {
             background: white;
             padding: 15px 15px 45px 15px;
@@ -451,17 +561,26 @@
             max-width: 100%;
             transform: rotate(-2deg);
             transition: all 0.4s ease;
-            animation: polaroidAppear 1s ease-out 1.7s both;
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes polaroidAppear {
-            from {
-                opacity: 0;
-                transform: rotate(-5deg) scale(0.9);
+        .polaroid.reveal .polaroid-image {
+            animation: photoReveal 1.5s ease-out forwards;
+        }
+
+        @keyframes photoReveal {
+            0% {
+                filter: brightness(3) blur(10px);
+                transform: scale(1.1);
             }
-            to {
-                opacity: 1;
-                transform: rotate(-2deg) scale(1);
+            60% {
+                filter: brightness(1.2) blur(0px);
+                transform: scale(1.02);
+            }
+            100% {
+                filter: brightness(1) blur(0px);
+                transform: scale(1);
             }
         }
 
@@ -504,7 +623,6 @@
             padding: 30px 25px;
             margin: 0 0 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            animation: fadeInUp 0.8s ease-out 1.9s both;
         }
 
         .countdown-title {
@@ -564,10 +682,8 @@
             font-weight: 300;
             font-style: italic;
             font-family: 'Cormorant Garamond', serif;
-            animation: fadeInUp 0.8s ease-out 2.1s both;
         }
 
-        /* Кнопка наверх */
         .scroll-top {
             position: fixed;
             bottom: 30px;
@@ -628,10 +744,16 @@
     </style>
 </head>
 <body>
+    <!-- Контейнер для вылетающих сердечек -->
+    <div class="hearts-burst" id="heartsBurst"></div>
+
+    <!-- Параллакс-сердечки на фоне -->
+    <div class="parallax-bg-hearts" id="parallaxHearts"></div>
+
     <!-- Летающие частицы -->
     <div class="particles" id="particles"></div>
 
-    <div class="invitation">
+    <div class="invitation" id="invitation">
         <div class="floating-hearts">
             <div class="floating-heart">💕</div>
             <div class="floating-heart">💗</div>
@@ -647,7 +769,7 @@
         
         <h1>Приглашение на свадьбу</h1>
         
-        <div class="names">
+        <div class="names" id="namesBlock">
             Марк <span class="and">&</span> Диана
         </div>
         
@@ -658,87 +780,102 @@
             самый важный день в нашей жизни!
         </p>
         
-        <div class="when-title">Когда?</div>
-        
-        <div class="calendar">
-            <div class="month-year">Июнь 2026</div>
-            <div class="weekdays">
-                <div class="weekday">Пн</div>
-                <div class="weekday">Вт</div>
-                <div class="weekday">Ср</div>
-                <div class="weekday">Чт</div>
-                <div class="weekday">Пт</div>
-                <div class="weekday">Сб</div>
-                <div class="weekday">Вс</div>
+        <!-- Когда? - выезжает слева -->
+        <div class="animate-section animate-from-left" data-animate>
+            <div class="when-title">Когда?</div>
+            
+            <div class="calendar" id="calendarBlock">
+                <div class="month-year">Июнь 2026</div>
+                <div class="weekdays">
+                    <div class="weekday">Пн</div>
+                    <div class="weekday">Вт</div>
+                    <div class="weekday">Ср</div>
+                    <div class="weekday">Чт</div>
+                    <div class="weekday">Пт</div>
+                    <div class="weekday">Сб</div>
+                    <div class="weekday">Вс</div>
+                </div>
+                <div class="days" id="calendarDays"></div>
             </div>
-            <div class="days" id="calendarDays"></div>
         </div>
         
-        <div class="location-block">
-            <h3>Во сколько?</h3>
-            
-            <div class="timeline-item">
-                <div class="time-badge">12:20</div>
-                <div class="timeline-content">
-                    <strong>Сбор гостей</strong>
-                    <span>Встречаемся в ЗАГСе</span>
-                </div>
-            </div>
-            
-            <div class="timeline-item">
-                <div class="time-badge">12:40</div>
-                <div class="timeline-content">
-                    <strong>Роспись</strong>
-                    <span>Торжественная церемония</span>
-                </div>
-            </div>
-            
-            <div class="timeline-item">
-                <div class="time-badge">13:00–13:30</div>
-                <div class="timeline-content">
-                    <strong>Фотосессия</strong>
-                    <span>Фотографируемся около ЗАГСа</span>
-                </div>
-            </div>
-            
-            <div class="timeline-item">
-                <div class="time-badge">13:30</div>
-                <div class="timeline-content">
-                    <strong>Фуршет</strong>
-                    <span>Отмечаем в "Торро Грилль"</span>
+        <!-- Во сколько? - выезжает справа -->
+        <div class="animate-section animate-from-right" data-animate>
+            <div class="location-block" id="timelineBlock">
+                <h3>Во сколько?</h3>
+                <div class="timeline-wrapper">
+                    <div class="timeline-progress" id="timelineProgress"></div>
+                    
+                    <div class="timeline-item">
+                        <div class="time-badge">12:20</div>
+                        <div class="timeline-content">
+                            <strong>Сбор гостей</strong>
+                            <span>Встречаемся в ЗАГСе</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="time-badge">12:40</div>
+                        <div class="timeline-content">
+                            <strong>Роспись</strong>
+                            <span>Торжественная церемония</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="time-badge">13:00–13:30</div>
+                        <div class="timeline-content">
+                            <strong>Фотосессия</strong>
+                            <span>Фотографируемся около ЗАГСа</span>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="time-badge">13:30</div>
+                        <div class="timeline-content">
+                            <strong>Фуршет</strong>
+                            <span>Отмечаем в "Торро Грилль"</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="where-section">
-            <div class="where-title">Где?</div>
-            <div class="polaroid">
-                <img src="photo_torro.jpg" alt="Торро Грилль" class="polaroid-image" onerror="this.style.display='none';">
-                <div class="polaroid-caption">
-                    <div class="polaroid-name">Торро Грилль</div>
-                    <div class="polaroid-address">ул. Пушкина, 10</div>
+        <!-- Где? - выезжает снизу -->
+        <div class="animate-section animate-from-bottom" data-animate>
+            <div class="where-section">
+                <div class="where-title">Где?</div>
+                <div class="polaroid" id="polaroidBlock">
+                    <img src="photo_torro.jpg" alt="Торро Грилль" class="polaroid-image" onerror="this.style.display='none';">
+                    <div class="polaroid-caption">
+                        <div class="polaroid-name">Торро Грилль</div>
+                        <div class="polaroid-address">ул. Пушкина, 10</div>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="countdown">
-            <div class="countdown-title">До свадьбы осталось</div>
-            <div class="countdown-numbers">
-                <div class="countdown-block">
-                    <span class="countdown-number" id="days">0</span>
-                    <span class="countdown-label">дней</span>
-                </div>
-                <div class="countdown-block">
-                    <span class="countdown-number" id="hours">0</span>
-                    <span class="countdown-label">часов</span>
-                </div>
-                <div class="countdown-block">
-                    <span class="countdown-number" id="minutes">0</span>
-                    <span class="countdown-label">минут</span>
-                </div>
-                <div class="countdown-block">
-                    <span class="countdown-number" id="seconds">0</span>
-                    <span class="countdown-label">секунд</span>
+        <!-- Таймер - увеличивается из центра -->
+        <div class="animate-section animate-scale" data-animate>
+            <div class="countdown">
+                <div class="countdown-title">До свадьбы осталось</div>
+                <div class="countdown-numbers">
+                    <div class="countdown-block">
+                        <span class="countdown-number" id="days">0</span>
+                        <span class="countdown-label">дней</span>
+                    </div>
+                    <div class="countdown-block">
+                        <span class="countdown-number" id="hours">0</span>
+                        <span class="countdown-label">часов</span>
+                    </div>
+                    <div class="countdown-block">
+                        <span class="countdown-number" id="minutes">0</span>
+                        <span class="countdown-label">минут</span>
+                    </div>
+                    <div class="countdown-block">
+                        <span class="countdown-number" id="seconds">0</span>
+                        <span class="countdown-label">секунд</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -751,7 +888,7 @@
     <button class="scroll-top" id="scrollTop">↑</button>
 
     <script>
-        // Летающие частицы
+        // ========== 1. Летающие частицы ==========
         function createParticles() {
             const particles = document.getElementById('particles');
             const emojis = ['✨', '💕', '💫', '🌸', '🕊️', '💝', '💗', '🌟'];
@@ -768,8 +905,82 @@
             }
         }
         createParticles();
+
+        // ========== 2. Параллакс-сердечки на фоне ==========
+        function createParallaxHearts() {
+            const container = document.getElementById('parallaxHearts');
+            const hearts = ['💕', '💗', '💝', '💖', '💘', '💓', '💞', '🩷'];
+            
+            for (let i = 0; i < 12; i++) {
+                const heart = document.createElement('span');
+                heart.classList.add('parallax-heart');
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 90 + '%';
+                heart.style.top = Math.random() * 90 + '%';
+                heart.style.fontSize = (Math.random() * 25 + 15) + 'px';
+                heart.style.opacity = (Math.random() * 0.15 + 0.05);
+                heart.dataset.speed = (Math.random() * 0.03 + 0.01);
+                container.appendChild(heart);
+            }
+        }
+        createParallaxHearts();
+
+        // Параллакс при скролле
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const parallaxHearts = document.querySelectorAll('.parallax-heart');
+            
+            parallaxHearts.forEach(heart => {
+                const speed = parseFloat(heart.dataset.speed);
+                heart.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+            
+            // Параллакс фона
+            document.body.style.backgroundPosition = `0 ${scrollY * 0.05}px`;
+        });
+
+        // ========== 3. Вылетающие сердечки при скролле ==========
+        let lastScrollY = 0;
+        let heartBurstCooldown = 0;
         
-        // Календарь
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            const scrollDiff = Math.abs(currentScrollY - lastScrollY);
+            
+            // Запускаем сердечки при значительном скролле
+            if (scrollDiff > 50 && heartBurstCooldown <= 0) {
+                createBurstHearts(5);
+                heartBurstCooldown = 15;
+            }
+            
+            if (heartBurstCooldown > 0) heartBurstCooldown--;
+            lastScrollY = currentScrollY;
+        });
+
+        function createBurstHearts(count) {
+            const container = document.getElementById('heartsBurst');
+            const heartEmojis = ['💕', '💗', '💝', '💖', '💘', '❤️', '💓', '💞'];
+            
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('span');
+                heart.classList.add('burst-heart');
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.setProperty('--tx', (Math.random() * 200 - 100) + 'px');
+                heart.style.setProperty('--ty', (Math.random() * -150 - 50) + 'px');
+                heart.style.setProperty('--rot', (Math.random() * 360) + 'deg');
+                
+                container.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 1500);
+            }
+        }
+
+        // ========== 4. Календарь оживает ==========
         function generateCalendar() {
             const daysContainer = document.getElementById('calendarDays');
             const weddingDay = 6;
@@ -777,14 +988,130 @@
             for (let day = 1; day <= 30; day++) {
                 const dayElement = document.createElement('div');
                 dayElement.classList.add('day');
-                if (day === weddingDay) dayElement.classList.add('wedding');
+                if (day === weddingDay) {
+                    dayElement.classList.add('wedding');
+                    dayElement.id = 'weddingDay';
+                }
                 dayElement.textContent = day;
+                dayElement.dataset.day = day;
                 daysContainer.appendChild(dayElement);
             }
         }
         generateCalendar();
+
+        function animateCalendarDays() {
+            const days = document.querySelectorAll('.day:not(.wedding)');
+            const weddingDay = document.getElementById('weddingDay');
+            
+            // Подсвечиваем дни по очереди до 6 числа
+            days.forEach((day, index) => {
+                const dayNum = parseInt(day.dataset.day);
+                if (dayNum < 6) {
+                    setTimeout(() => {
+                        day.classList.add('counting');
+                        setTimeout(() => day.classList.remove('counting'), 500);
+                    }, dayNum * 100);
+                }
+            });
+            
+            // Сильная пульсация на дате свадьбы
+            setTimeout(() => {
+                weddingDay.classList.add('strong-pulse');
+                setTimeout(() => weddingDay.classList.remove('strong-pulse'), 2400);
+            }, 600);
+        }
+
+        // ========== 5. Таймлайн с прогрессом ==========
+        function updateTimelineProgress() {
+            const timelineBlock = document.getElementById('timelineBlock');
+            const progress = document.getElementById('timelineProgress');
+            const blockRect = timelineBlock.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // Вычисляем насколько таймлайн виден
+            const visibleStart = windowHeight - blockRect.top;
+            const blockHeight = blockRect.height;
+            let percent = (visibleStart / (blockHeight + windowHeight)) * 100;
+            percent = Math.max(0, Math.min(100, percent));
+            
+            progress.style.height = percent + '%';
+        }
+
+        // ========== 6. Секции выезжают ==========
+        function checkAnimateSections() {
+            const sections = document.querySelectorAll('[data-animate]');
+            
+            sections.forEach(section => {
+                const rect = section.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                
+                if (rect.top < windowHeight * 0.85) {
+                    section.classList.add('visible');
+                }
+            });
+        }
+
+        // ========== Неоновое свечение имён ==========
+        function checkNamesGlow() {
+            const namesBlock = document.getElementById('namesBlock');
+            const rect = namesBlock.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            // Свечение когда имена в центре экрана
+            const centerDistance = Math.abs(rect.top + rect.height/2 - windowHeight/2);
+            if (centerDistance < 150) {
+                namesBlock.classList.add('glow');
+            } else {
+                namesBlock.classList.remove('glow');
+            }
+        }
+
+        // ========== Поляроид проявляется ==========
+        let polaroidRevealed = false;
+        function checkPolaroidReveal() {
+            if (polaroidRevealed) return;
+            
+            const polaroid = document.getElementById('polaroidBlock');
+            const rect = polaroid.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            
+            if (rect.top < windowHeight * 0.8) {
+                polaroid.classList.add('reveal');
+                polaroidRevealed = true;
+            }
+        }
+
+        // ========== Главный обработчик скролла ==========
+        window.addEventListener('scroll', () => {
+            updateTimelineProgress();
+            checkAnimateSections();
+            checkNamesGlow();
+            checkPolaroidReveal();
+        });
+
+        // Запускаем календарь когда он виден
+        let calendarAnimated = false;
+        const calendarObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !calendarAnimated) {
+                    animateCalendarDays();
+                    calendarAnimated = true;
+                }
+            });
+        }, { threshold: 0.5 });
         
-        // Таймер
+        const calendarBlock = document.getElementById('calendarBlock');
+        if (calendarBlock) calendarObserver.observe(calendarBlock);
+
+        // Инициализация при загрузке
+        window.addEventListener('load', () => {
+            updateTimelineProgress();
+            checkAnimateSections();
+            checkNamesGlow();
+            checkPolaroidReveal();
+        });
+
+        // ========== Таймер ==========
         function getMagadanTime() {
             const now = new Date();
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
@@ -820,7 +1147,7 @@
         updateCountdown();
         setInterval(updateCountdown, 1000);
         
-        // Кнопка наверх
+        // ========== Кнопка наверх ==========
         const scrollTopBtn = document.getElementById('scrollTop');
         
         window.addEventListener('scroll', () => {
