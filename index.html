@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пригласительное</title>
+    <title>Приглашение на свадьбу | Марк & Диана</title>
+    
+    <!-- Open Graph для красивого превью в мессенджерах -->
+    <meta property="og:title" content="Приглашение на свадьбу | Марк & Диана">
+    <meta property="og:description" content="Дорогие гости! Ждём вас 6 июня 2026 года разделить с нами этот важный день 💕">
+    <meta property="og:image" content="https://wolly-y.github.io/preview.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://wolly-y.github.io">
+    
+    <!-- Для Telegram -->
+    <meta name="twitter:card" content="summary_large_image">
+    
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💌%3C/text%3E%3C/svg%3E">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500&family=Cormorant+Garamond:wght@400;600;700&family=Dancing+Script:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <style>
@@ -106,7 +119,6 @@
             transition: transform 0.1s ease-out;
         }
 
-        /* Приветственный экран */
         .welcome-screen {
             position: fixed;
             top: 0;
@@ -482,7 +494,6 @@
             100% { background: transparent; transform: scale(1); }
         }
 
-        /* Таймлайн */
         .location-block {
             background: linear-gradient(135deg, #c0392b, #e74c3c);
             color: white;
@@ -920,15 +931,11 @@
     <button class="scroll-top" id="scrollTop">↑</button>
 
     <script>
-        // Приветственный экран + музыка
         const welcomeScreen = document.getElementById('welcomeScreen');
         const audio = new Audio();
         audio.loop = true;
         audio.volume = 0.4;
-        
-        // Настоящий Свадебный марш Мендельсона
         audio.src = 'music.mp3';
-        
         let musicStarted = false;
 
         welcomeScreen.addEventListener('click', function(e) {
@@ -940,7 +947,6 @@
             setTimeout(() => welcomeScreen.remove(), 800);
         });
 
-        // Частицы
         function createParticles() {
             const emojis = ['✨','💕','💫','🌸','🕊️','💝','💗','🌟'];
             const container = document.getElementById('particles');
@@ -957,7 +963,6 @@
         }
         createParticles();
 
-        // Параллакс-сердца
         function createParallaxHearts() {
             const container = document.getElementById('parallaxHearts');
             const hearts = ['💕','💗','💝','💖','💘','💓','💞'];
@@ -983,7 +988,6 @@
             document.body.style.backgroundPosition = `0 ${scrollY*0.05}px`;
         });
 
-        // Сердечки при скролле
         let lastScrollY = 0, cooldown = 0;
         window.addEventListener('scroll', () => {
             const diff = Math.abs(window.scrollY - lastScrollY);
@@ -1010,7 +1014,6 @@
             }
         }
 
-        // Календарь
         function generateCalendar() {
             const container = document.getElementById('calendarDays');
             for (let d = 1; d <= 30; d++) {
@@ -1038,7 +1041,6 @@
             }, 600);
         }
 
-        // Таймлайн
         function updateTimelineProgress() {
             const block = document.getElementById('timelineBlock');
             const progress = document.getElementById('timelineProgress');
@@ -1049,14 +1051,12 @@
             progress.style.height = pct + '%';
         }
 
-        // Анимация секций
         function checkAnimateSections() {
             document.querySelectorAll('[data-animate]').forEach(sec => {
                 if (sec.getBoundingClientRect().top < window.innerHeight * 0.85) sec.classList.add('visible');
             });
         }
 
-        // Поляроид
         let polaroidRevealed = false;
         function checkPolaroidReveal() {
             if (polaroidRevealed) return;
@@ -1077,7 +1077,6 @@
 
         window.addEventListener('load', () => { updateTimelineProgress(); checkAnimateSections(); checkPolaroidReveal(); });
 
-        // Таймер (Магадан UTC+11)
         function getMagadanTime() {
             const now = new Date();
             return new Date(now.getTime() + now.getTimezoneOffset()*60000 + 11*3600000);
@@ -1098,7 +1097,6 @@
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
-        // Кнопка наверх
         const btn = document.getElementById('scrollTop');
         window.addEventListener('scroll', () => { btn.classList.toggle('visible', window.scrollY > 500); });
         btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
